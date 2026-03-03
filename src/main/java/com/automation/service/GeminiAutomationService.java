@@ -1,6 +1,5 @@
 package com.automation.service;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -8,6 +7,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,8 @@ import java.time.Duration;
 
 @Service
 public class GeminiAutomationService {
+
+    private static final Logger logger = LoggerFactory.getLogger(GeminiAutomationService.class);
 
     @Value("${gemini.url:https://gemini.google.com/app}")
     private String geminiUrl;
@@ -38,15 +41,15 @@ public class GeminiAutomationService {
             String systemFlatpakBrave = "/var/lib/flatpak/exports/bin/com.brave.Browser";
             
             if (new java.io.File(userFlatpakBrave).exists()) {
-                System.out.println("Using user Flatpak Brave from: " + userFlatpakBrave);
+                logger.info("Using user Flatpak Brave from: {}", userFlatpakBrave);
                 options.setBinary(userFlatpakBrave);
             } else if (new java.io.File(systemFlatpakBrave).exists()) {
-                System.out.println("Using system Flatpak Brave from: " + systemFlatpakBrave);
+                logger.info("Using system Flatpak Brave from: {}", systemFlatpakBrave);
                 options.setBinary(systemFlatpakBrave);
             }
             
             // Let Selenium Manager (built into Selenium 4.x) handle ChromeDriver automatically
-            System.out.println("Using Selenium Manager to auto-detect ChromeDriver...");
+            logger.info("Using Selenium Manager to auto-detect ChromeDriver...");
             
             // Chrome/Brave options
             options.addArguments("--disable-blink-features=AutomationControlled");
@@ -65,22 +68,22 @@ public class GeminiAutomationService {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds));
 
             // Navigate to Gemini
-            System.out.println("Opening Gemini URL: " + geminiUrl);
+            logger.info("Opening Gemini URL: {}", geminiUrl);
             driver.get(geminiUrl);
 
             // Wait for the page to fully load
-            System.out.println("Waiting for page to load...");
+            logger.info("Waiting for page to load...");
             Thread.sleep(5000);
 
             // Wait for input field to be visible using aria-label
-            System.out.println("Waiting for text input field to be visible (using aria-label)...");
+            logger.info("Waiting for text input field to be visible (using aria-label)...");
             WebElement inputField = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(
                     By.cssSelector("[aria-label='Enter a prompt for Gemini']")
                 )
             );
             
-            System.out.println("Input field is visible. Clicking on it...");
+            logger.info("Input field is visible. Clicking on it...");
             wait.until(ExpectedConditions.elementToBeClickable(
                 By.cssSelector("[aria-label='Enter a prompt for Gemini']")
             )).click();
@@ -88,14 +91,14 @@ public class GeminiAutomationService {
             // Wait a moment after clicking
             Thread.sleep(500);
             
-            System.out.println("Typing text: " + inputText);
+            logger.info("Typing text: {}", inputText);
             inputField.sendKeys(inputText);
 
             // Wait for the text to be fully entered
             Thread.sleep(1000);
 
             // Wait for send button to be visible and clickable using aria-label
-            System.out.println("Waiting for send button to be visible and clickable...");
+            logger.info("Waiting for send button to be visible and clickable...");
             WebElement sendButton = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(
                     By.cssSelector("[aria-label='Send message']")
@@ -106,21 +109,20 @@ public class GeminiAutomationService {
                 By.cssSelector("[aria-label='Send message']")
             ));
             
-            System.out.println("Clicking send button...");
+            logger.info("Clicking send button...");
             sendButton.click();
 
             // Wait to see the result
-            System.out.println("Waiting for response...");
+            logger.info("Waiting for response...");
             Thread.sleep(5000);
 
-            System.out.println("Automation task completed successfully!");
+            logger.info("Automation task completed successfully!");
 
         } catch (Exception e) {
-            System.err.println("Error during automation: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("Error during automation: {}", e.getMessage(), e);
         } finally {
             if (driver != null) {
-                System.out.println("Closing browser...");
+                logger.info("Closing browser...");
                 driver.quit();
             }
         }

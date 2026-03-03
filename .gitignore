@@ -34,3 +34,6 @@ logs/
 *.mp4
 chromedriver
 geckodriver
+
+# Environment Variables
+.env
