@@ -1,0 +1,44 @@
+Give me current stock market analysis for swing trading in India. Include global market sentiment, India sector outlook (which sectors are resilient and which are under pressure), and specific stock recommendations. For each stock, provide information in every field given in JSON. Present this in a clear readable json format like below only, no other data.
+
+{
+  "marketAnalysis": {
+    "globalMarketSentiment": "Cautious to volatile. A major supply shock stemming from the Middle East conflict and the closure of the Strait of Hormuz has intensified global inflation fears and disrupted energy supply chains. However, near-term recovery spikes are visible, with the Dow Jones closing higher at 51,069.65 (+0.75%) and the Nasdaq gaining +0.91%, helping soothe immediate global panic and supporting localized IT rebounds.",
+    "indiaSectorOutlook": {
+      "resilientSectors": [
+        "IT Services (Strong momentum driven by Agentic AI partnerships and US market strength; Nifty IT surged 3.2% recently)",
+        "Private Banking (Showing selective structural recovery and strong technical bases)"
+      ],
+      "underPressureSectors": [
+        "Oil & Gas (Hit heavily by geopolitical uncertainty and crude volatility, down 2.47%)",
+        "Metals and PSEs (Under pressure due to heavy FII selling and concerns over below-normal monsoon forecasts)",
+        "FMCG (Extending long losing streaks due to rural demand anxieties and inflation)"
+      ]
+    }
+  },
+  "stockRecommendations": [
+    {
+      "companyName": "Reliance Industries Ltd",
+      "tickerSymbol": "RELIANCE",
+      "sector": "",
+      "currentStockPriceNSE": 2850.75,
+      "entryRange": {
+        "low": 2780.00,
+        "high": 2820.00
+      },
+      "stopLoss": 2700.50,
+      "targetPrice": 3100.00,
+      "maxHoldingDays": 10,
+      "reasonToBuy": "",
+      "riskLevel": "moderate",
+      "confidenceScore": 0.85,
+      "supportLevels": [2780.0, 2720.0, 2650.0],
+      "resistanceLevels": [2900.0, 2980.0, 3100.0],
+      "technicalIndicators": {
+        "rsi": 58.3,
+        "macd": "bullish crossover",
+        "movingAverage50": 2745.00,
+        "movingAverage200": 2620.00
+      }
+    }
+  ]
+}
