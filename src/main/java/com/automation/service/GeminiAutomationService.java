@@ -93,8 +93,13 @@ public class GeminiAutomationService {
             inputField.click();
             Thread.sleep(5000);
 
-            logger.info("Typing prompt...");
-            inputField.sendKeys(inputText);
+            logger.info("Typing prompt via JavaScript...");
+            ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].innerText = arguments[1];", inputField, inputText
+            );
+            ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));", inputField
+            );
             Thread.sleep(5000);
 
             logger.info("Sending message...");
